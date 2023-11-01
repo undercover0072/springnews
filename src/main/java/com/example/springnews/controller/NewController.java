@@ -130,11 +130,12 @@ public class NewController {
             oldvo.setWriter(vo.getWriter());
             oldvo.setTitle(vo.getTitle());
             oldvo.setContent(vo.getContent());
+
             mav.addObject("listAll", newsR.findAll());
         } catch(Exception e) {
             mav.addObject("msg", "글 작성을 수정하는 동안 오류 발생");
         }
-        mav.setViewName("meetingView");
+        mav.setViewName("newsView");
         return mav;
     }
 }

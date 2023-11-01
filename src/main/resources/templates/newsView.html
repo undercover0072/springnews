@@ -37,14 +37,11 @@
             <td th:class="${vo.id}" th:onclick="|location.href='@{/one(id=${vo.id})}'|">[[${ vo.title }]]</td>
             <td th:class="${vo.id}">[[${ vo.writedate }]]</td>
             <td th:class="${vo.id}">[[${ vo.cnt }]]</td>
-
-<!--            <td><a th:href ="@{/delete(id=${vo.id})}">삭제</a></td>-->
         </tr>
     </table>
 </th:block>
 <th:block th:if="${ msg }" th:text="${ msg }"></th:block>
 <br>
-
 <hr>
 
 <button onclick="document.getElementById('write').style.display='block'">기사 작성</button>
@@ -54,7 +51,7 @@
     <div id="content">
         <hr><h2 id="divC">뉴스 내용</h2>
         <form th:each="vo : ${ selectNews }" method="post" action="/update">
-            <input type="hidden" name="id" value="0">
+            <input type="hidden" name="id" th:value="${vo.id}">
             기사 제목 : <input type="text" name = "title" th:class="${vo.id}" th:value="${vo.title}">
             <br>
             작성자 : <input type="text" name="writer" th:class="${vo.id}" th:value="${vo.writer}">
