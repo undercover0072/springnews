@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>News</title>
+
+    <style>
+        * {
+            text-align : center;
+        }
+
+        a {
+            display-decoration : none;
+        }
+
+        td{
+            border-bottom : 2px dotted green;
+            padding-left : 20px;
+        }
+
+        tr:hover{
+            background-color : gray;
+            font-weight : bold;
+        }
+    </style>
+
+</head>
+<body>
+<h1 onclick="location.href='/newsmain'">뉴스 게시판</h1>
+<hr>
+
+<th:block th:if="${ listAll }">
+    <table>
+        <tr th:each="vo : ${ listAll }">
+            <td th:class="${vo.id}">[[${ vo.id }]]</td>
+            <td th:class="${vo.id}" th:onclick="|location.href='@{/writer(writer=${vo.writer})}'|">[[${ vo.writer }]]</td>
+            <td th:class="${vo.id}" th:onclick="|location.href='@{/one(id=${vo.id})}'|">[[${ vo.title }]]</td>
+            <td th:class="${vo.id}">[[${ vo.writedate }]]</td>
+            <td th:class="${vo.id}">[[${ vo.cnt }]]</td>
+
+<!--            <td><a th:href ="@{/delete(id=${vo.id})}">삭제</a></td>-->
+        </tr>
+    </table>
+</th:block>
+<th:block th:if="${ msg }" th:text="${ msg }"></th:block>
+<br>
+
+<hr>
+
+<button onclick="document.getElementById('write').style.display='block'">기사 작성</button>
+<button onclick="document.getElementById('search').style.display='block'">기사 검색</button>
+
+<th:block th:if="${ selectNews }">
+    <div id="content">
+        <hr><h2 id="divC">뉴스 내용</h2>
+        <form th:each="vo : ${ selectNews }" method="post" action="/update">
+            <input type="hidden" name="id" value="0">
+            기사 제목 : <input type="text" name = "title" th:class="${vo.id}" th:value="${vo.title}">
+            <br>
+            작성자 : <input type="text" name="writer" th:class="${vo.id}" th:value="${vo.writer}">
+            <br>
+            기사 내용 <br>
+            <textarea rows="3" cols="60" name="content" th:class="${vo.id}">[[${vo.content}]]</textarea>
+            <br>
+            <input type="button"  value="확인" onclick="document.getElementById('content').style.display='none';return false">
+            <input type="submit" value="수정">
+            <input type="button" value="삭제" th:onclick="|location.href='@{/delete(id=${vo.id})}'|">
+        </form>
+    </div>
+</th:block>
+
+<div id="write"  style="display:none">
+    <hr><h2 id="divT">뉴스 작성</h2>
+    <form method = "post" action = "/insert">
+        <input type="hidden" name="id" value="0">
+        작성자 : <input id="m_writer" type="text"  name="writer">
+        <br>
+        기사 제목 : <input id="m_title" type="text" name="title">
+        <br>
+        기사 내용 <br>
+        <textarea id="m_content"  rows="3" cols="60" name="content"></textarea>
+        <br>
+        <input type="submit" value = "작성">
+        <input type="reset" value="재작성">
+        <input type="button"  value="취소" onclick="document.getElementById('write').style.display='none';return false">
+    </form>
+</div>
+
+<div id="search" style="display:none">
+    <hr><h2 id="divS">뉴스 검색</h2>
+    <form method = "get" action ="/search">
+        검색어 : <input type = "search" name = "keyword" >
+        <input type = "submit" value = "검색">
+    </form>
+</div>
+
+</body>
+</html>
