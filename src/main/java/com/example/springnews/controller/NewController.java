@@ -130,6 +130,7 @@ public class NewController {
             oldvo.setWriter(vo.getWriter());
             oldvo.setTitle(vo.getTitle());
             oldvo.setContent(vo.getContent());
+            newsR.save(oldvo);
 
             mav.addObject("listAll", newsR.findAll());
         } catch(Exception e) {
