@@ -158,8 +158,8 @@
                 </tr>
                 <tr th:each="vo : ${ listAll }">
                     <td th:class="${vo.id}">[[${ vo.id }]]</td>
-                    <td th:class="${vo.id}" th:onclick="|location.href='@{/writer(writer=${vo.writer})}'|">[[${ vo.writer }]]</td>
                     <td th:class="${vo.id}" th:onclick="|location.href='@{/one(id=${vo.id})}'|">[[${ vo.title }]]</td>
+                    <td th:class="${vo.id}" th:onclick="|location.href='@{/writer(writer=${vo.writer})}'|">[[${ vo.writer }]]</td>
                     <td th:class="${vo.id}">[[${ vo.writedate }]]</td>
                     <td th:class="${vo.id}">[[${ vo.cnt }]]</td>
                 </tr>
