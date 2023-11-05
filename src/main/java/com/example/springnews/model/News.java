@@ -26,7 +26,7 @@ public class News {
     private String content;
 
     @CreationTimestamp
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime writedate;
 
     private int cnt;

@@ -40,8 +40,17 @@ public class NewController {
         ModelAndView mav = new ModelAndView();
 
         try{
+            News selectNews = newsR.findById(id).get(); //선택된 뉴스 조회
+
             mav.addObject("listAll", newsR.findAll());
-            mav.addObject("selectNews", newsR.findById(id).get());
+            mav.addObject("selectNews", selectNews);
+
+            int count = selectNews.getCnt(); //선택된 뉴스의 조회수 추출
+
+            selectNews.setCnt(++count); //조회수 증가
+
+            newsR.save(selectNews); //조회수가 증가한 엔티티를 업데이트
+
         } catch (Exception e){
             mav.addObject("msg", "열람 중 오류가 발생했습니다");
         }

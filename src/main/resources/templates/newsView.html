@@ -6,15 +6,73 @@
 
     <style>
         * {
-            margin : 0 auto;
+            margin : 0;
         }
 
         .divTitle{
             text-align : center;
         }
 
+        .search{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        #divS{
+            margin-right: 1%
+        }
+
+        .h2Title{
+            margin: 3% auto;
+        }
+
+        .middle{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .content{
+            margin: 5%;
+        }
+
+        .middleList{
+            margin: 5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .newsEdit{
+            margin: 3% auto;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+            background: rgba(255, 255, 255, 0.20);
+        }
+
+        #newsInfo1{
+            margin: 3% auto;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+            background: rgba(255, 255, 255, 0.20);
+        }
+
+        #newsInfo2{
+            margin: 3% auto;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+            background: rgba(255, 255, 255, 0.20);
+        }
+
         td{
-            border-bottom : 2px dotted green;
+            border-bottom : 1px solid #00CDFF;
             padding-left : 20px;
         }
 
@@ -31,15 +89,16 @@
     function display(){
 
     }
+
+
 </script>
 
 <div class="top">
     <h1 class="divTitle" onclick="location.href='/newsmain'">뉴스 게시판</h1>
 
-    <div id="search">
-        <h2 id="divS">뉴스 검색</h2>
+    <div class="search">
         <form method = "get" action ="/search">
-            <input type = "search" name = "keyword">
+            <input type = "search" name = "keyword" placeholder="내용 검색">
             <input type = "submit" value = "검색">
         </form>
     </div>
@@ -48,34 +107,38 @@
 
 <div class="middle">
     <th:block th:if="${ selectNews }">
-        <div id="content">
-            <h2 id="divC">뉴스 내용</h2>
+        <div class="content" id="newsContents">
+            <h2 class="h2Title">뉴스 내용</h2>
             <form th:each="vo : ${ selectNews }" method="post" action="/update">
                 <input type="hidden" name="id" th:value="${vo.id}">
-                기사 제목 : <input type="text" name = "title" th:class="${vo.id}" th:value="${vo.title}">
+                기사 제목<br>
+                <input id="newsInfo1" type="text" name="title" th:class="${vo.id}" th:value="${vo.title}">
                 <br>
-                작성자 : <input type="text" name="writer" th:class="${vo.id}" th:value="${vo.writer}">
+                작성자<br>
+                <input id="newsInfo2" type="text" name="writer" th:class="${vo.id}" th:value="${vo.writer}">
                 <br>
-                기사 내용 <br>
-                <textarea rows="3" cols="60" name="content" th:class="${vo.id}">[[${vo.content}]]</textarea>
+                기사 내용<br>
+                <textarea rows="10" cols="60" name="content" th:class="${vo.id}">[[${vo.content}]]</textarea>
                 <br>
-                <input type="button"  value="확인" onclick="document.getElementById('content').style.display='none';return false">
+                <input type="button"  value="확인" onclick="document.getElementById('newsContents').style.display='none';return false">
                 <input type="submit" value="수정">
                 <input type="button" value="삭제" th:onclick="|location.href='@{/delete(id=${vo.id})}'|">
             </form>
         </div>
     </th:block>
 
-    <div id="write"  style="display:none">
-        <hr><h2 class="alignCenter" id="divT">뉴스 작성</h2>
+    <div class="content" id="write"  style="display:none">
+        <h2 class="h2Title">뉴스 작성</h2>
         <form method = "post" action = "/insert">
             <input type="hidden" name="id" value="0">
-            작성자 : <input id="m_writer" type="text"  name="writer">
+            작성자<br>
+            <input class="newsEdit" type="text" name="writer">
             <br>
-            기사 제목 : <input id="m_title" type="text" name="title">
+            기사 제목<br>
+            <input class="newsEdit" type="text" name="title">
             <br>
-            기사 내용 <br>
-            <textarea id="m_content"  rows="3" cols="60" name="content"></textarea>
+            기사 내용<br>
+            <textarea id="m_content" rows="10" cols="60" name="content"></textarea>
             <br>
             <input class="alignCenter" type="submit" value = "작성">
             <input class="alignCenter" type="reset" value="재작성">
@@ -83,23 +146,29 @@
         </form>
     </div>
 
-    <th:block th:if="${ listAll }">
-        <hr>
-        <table>
-            <tr th:each="vo : ${ listAll }">
-                <td th:class="${vo.id}">[[${ vo.id }]]</td>
-                <td th:class="${vo.id}" th:onclick="|location.href='@{/writer(writer=${vo.writer})}'|">[[${ vo.writer }]]</td>
-                <td th:class="${vo.id}" th:onclick="|location.href='@{/one(id=${vo.id})}'|">[[${ vo.title }]]</td>
-                <td th:class="${vo.id}">[[${ vo.writedate }]]</td>
-                <td th:class="${vo.id}">[[${ vo.cnt }]]</td>
-            </tr>
-        </table>
-    </th:block>
-    <th:block th:if="${ msg }" th:text="${ msg }"></th:block>
-    <br>
-    <hr>
-
-    <button onclick="document.getElementById('write').style.display='block'">기사 작성</button>
+    <div class="middleList">
+        <th:block th:if="${ listAll }">
+            <table class="newslist">
+                <tr>
+                    <td>번호</td>
+                    <td>제목</td>
+                    <td>작성자</td>
+                    <td>작성일</td>
+                    <td>조회수</td>
+                </tr>
+                <tr th:each="vo : ${ listAll }">
+                    <td th:class="${vo.id}">[[${ vo.id }]]</td>
+                    <td th:class="${vo.id}" th:onclick="|location.href='@{/writer(writer=${vo.writer})}'|">[[${ vo.writer }]]</td>
+                    <td th:class="${vo.id}" th:onclick="|location.href='@{/one(id=${vo.id})}'|">[[${ vo.title }]]</td>
+                    <td th:class="${vo.id}">[[${ vo.writedate }]]</td>
+                    <td th:class="${vo.id}">[[${ vo.cnt }]]</td>
+                </tr>
+            </table>
+        </th:block>
+        <th:block th:if="${ msg }" th:text="${ msg }"></th:block>
+        <br>
+        <button onclick="document.getElementById('write').style.display='block'">기사 작성</button>
+    </div>
 
 </div>
 
